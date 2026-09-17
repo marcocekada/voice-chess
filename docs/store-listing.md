@@ -38,7 +38,6 @@ NON PERDI MAI UNA PARTITA
 
 SEMPLICE E CHIARA
 • Scacchiera grande con lettere e numeri ben leggibili su tutti i lati
-• Interfaccia in italiano e inglese, cambiabile in un tocco
 • Nessun account, nessuna registrazione, nessuna connessione richiesta per giocare
 • Regole complete: arrocco, en passant, promozione, stallo, triplice ripetizione, regola delle 50 mosse
 
@@ -52,55 +51,4 @@ Voice Chess Play è software libero (GPLv3) e usa il motore Stockfish. Codice so
 scacchi,voce,vocale,comandi,scacchiera,computer,elo,partita,allenamento,gioco,strategia,tavolo
 
 **Novità in questa versione** (1.0.0)
-Prima versione: partite vocali contro il computer da 200 a 3400 Elo, salvataggio automatico, storico, italiano e inglese.
-
----
-
-## English (en-US)
-
-**Name**
-Voice Chess Play
-
-**Subtitle**
-Chess you play by speaking
-
-**Promotional text**
-Say "Knight to f3" and watch the piece move. Chess against the computer, from 200 to 3400 Elo, played with your voice. No account, no ads.
-
-**Description**
-Voice Chess Play is the chessboard that listens. Speak as you would to a playing partner, "Pawn to e4", "Take it with the knight", "Castle kingside", and the move is played on the board. The computer answers, and the game goes on.
-
-PLAY BY VOICE
-• Natural-language commands: "Knight to f3", "The pawn goes to e4", "Take the bishop", "Promote to queen"
-• Understands spoken coordinates: "f three", "see six", "b four"
-• When two pieces can make the same move, the app asks which one you mean instead of guessing
-• Short spoken replies: the opponent's move, check, checkmate, draw
-• You can always tap the pieces or type the command instead
-
-PICK YOUR OPPONENT
-• Strength from 200 to 3400 Elo with a slider and presets, from beginner to near-maximum engine
-• Play as White, Black or random
-• Powered by the Stockfish engine, the same used by major chess sites, calibrated for every level
-
-NEVER LOSE A GAME
-• Automatic save after every move, even if you close the app or a call comes in
-• Resume exactly where you left off
-• History of all your games with date, color, opponent and result
-
-SIMPLE AND CLEAR
-• Large board with easy-to-read letters and numbers on every side
-• Interface in Italian and English, switchable with one tap
-• No account, no sign-up, no connection needed to play
-• Full rules: castling, en passant, promotion, stalemate, threefold repetition, fifty-move rule
-
-Great for training board visualization, for playing hands-free, or for anyone who finds it more natural to say a move than to drag a piece.
-
-Speech recognition uses the system's services. Microphone permission is needed only to hear your moves; the app keeps no audio.
-
-Voice Chess Play is free software (GPLv3) and uses the Stockfish engine. Source code: https://github.com/marcocekada/voice-chess
-
-**Keywords** (one line, ≤100 characters)
-chess,voice,speech,commands,board,computer,elo,game,training,strategy,hands-free,puzzle
-
-**What's new** (1.0.0)
-First release: voice games against the computer from 200 to 3400 Elo, automatic save, history, English and Italian.
+Prima versione: partite vocali contro il computer da 200 a 3400 Elo, salvataggio automatico, storico partite.

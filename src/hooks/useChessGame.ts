@@ -41,7 +41,7 @@ interface GameMeta {
 }
 
 export function useChessGame(source: GameSource) {
-  const { t, language, locale } = useI18n();
+  const { t, locale } = useI18n();
   const { voiceFeedback } = useSettings();
 
   const chessRef = useRef(new Chess());
@@ -352,7 +352,7 @@ export function useChessGame(source: GameSource) {
         return;
       }
 
-      const intent = parseCommand(text, language);
+      const intent = parseCommand(text);
       if (intent.kind === 'move' && intent.piece) contextRef.current.lastMentionedPiece = intent.piece;
 
       if (clarification) {
@@ -372,7 +372,7 @@ export function useChessGame(source: GameSource) {
 
       handleResolution(resolveIntent(intent, chessRef.current, contextRef.current, t));
     },
-    [clarification, derived.isGameOver, derived.isPlayerTurn, handleResolution, language, speak, t],
+    [clarification, derived.isGameOver, derived.isPlayerTurn, handleResolution, speak, t],
   );
 
   const chooseCandidate = useCallback(

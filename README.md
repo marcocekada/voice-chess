@@ -877,16 +877,15 @@ Verifiche rapide senza device:
 
 ``` bash
 npx tsc --noEmit                      # typecheck
-npx tsx scripts/parser.selftest.ts    # parser + resolver IT/EN
+npx tsx scripts/parser.selftest.ts    # parser + resolver
 npx tsx scripts/engine.selftest.ts    # velocità/forza LocalJsEngine per Elo
 npx tsx scripts/build-stockfish.ts    # rigenera assets/engine/stockfish.html
 ```
 
 ### Lingua
 
-Italiano e inglese. La lingua predefinita è l'italiano; dalla home si può
-passare all'inglese e la scelta è salvata in locale. La lingua guida anche il riconoscimento vocale
-(`it-IT` / `en-US`) e le risposte vocali.
+Solo italiano: interfaccia, parser dei comandi, riconoscimento vocale
+(`it-IT`) e risposte vocali.
 
 ### Voce
 

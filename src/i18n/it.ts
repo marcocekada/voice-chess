@@ -22,7 +22,6 @@ export const it = {
     random: 'A caso',
     you: 'Tu',
     computer: 'Computer',
-    language: 'Lingua',
     voiceFeedback: 'Risposte vocali',
     moves: 'mosse',
     move: 'mossa',

@@ -1,7 +1,7 @@
 # Voice Chess Play — note per Claude
 
 App mobile Expo (SDK 57, React Native 0.86, TypeScript strict) per giocare a
-scacchi contro il computer con comandi vocali in italiano e inglese.
+scacchi contro il computer con comandi vocali in italiano (solo italiano).
 La specifica di prodotto completa è in `README.md` (sezioni 1–27); la sezione
 28 descrive lo stato dell'implementazione.
 
@@ -12,7 +12,7 @@ npm install
 npx expo start -c                       # Expo Go / dev client, cache pulita
 npx expo start --web                    # anteprima browser (react-native-web)
 npx tsc --noEmit                        # typecheck: deve restare a zero errori
-npx tsx scripts/parser.selftest.ts      # parser + resolver IT/EN (deve stampare ALL OK)
+npx tsx scripts/parser.selftest.ts      # parser + resolver (deve stampare ALL OK)
 npx tsx scripts/engine.selftest.ts      # tempi/mosse engine per Elo
 npx tsx scripts/make-icons.ts           # rigenera tutte le icone in assets/
 npx tsx scripts/build-stockfish.ts      # rigenera assets/engine/stockfish.html
@@ -26,7 +26,7 @@ Dopo ogni modifica a parser, normalizzatore, resolver o i18n rilanciare
 
 - `chess/` — `types.ts` (SavedGame, MoveIntent, ResolveResult), `game.ts`
   (status/result da chess.js, restore con replay + verifica FEN, describeMove),
-  `moveParser.ts` (testo → MoveIntent, vocabolari IT/EN), `moveResolver.ts`
+  `moveParser.ts` (testo → MoveIntent, vocabolario italiano), `moveResolver.ts`
   (MoveIntent → mossa legale, chiarimenti).
 - `voice/` — `voiceCommandNormalizer.ts` (lettere/numeri parlati → "f3"),
   `speechRecognition.ts` (wrapper lazy su expo-speech-recognition),
@@ -43,9 +43,8 @@ Dopo ogni modifica a parser, normalizzatore, resolver o i18n rilanciare
 - `hooks/useChessGame.ts` — tutto il flusso di partita: comandi, touch,
   chiarimenti, engine, salvataggio (dopo ogni mossa, background, unmount).
 - `hooks/useVoiceCommands.ts` — push-to-talk; `available:false` in Expo Go.
-- `i18n/` — `it.ts` è la fonte dei tipi (`Translations`), `en.ts` deve
-  combaciare. Lingua predefinita italiano (`DEFAULT_LANGUAGE`); l'utente può
-  passare all'inglese dalla Home, scelta salvata in AsyncStorage.
+- `i18n/` — solo `it.ts`; `useI18n()` restituisce `{ t, locale: 'it-IT' }`.
+  Non esistono altre lingue: non aggiungere selettori o dizionari.
 - `components/ChessBoard/` — scacchiera in View + SvgXml, pezzi cburnett
   inlinati in `pieceSvgs.ts`, animazioni con `Animated`.
 - `screens/`, `navigation/` — stack: Home, NewGame, Game, History.
@@ -58,8 +57,8 @@ Dopo ogni modifica a parser, normalizzatore, resolver o i18n rilanciare
 - Il resolver non indovina: 0 candidati → errore, 1 → esegue, N → domanda
   con `candidates`; la risposta passa da `resolveClarification`.
 - Portrait only, light mode only (`app.json`).
-- Testi utente sempre in entrambe le lingue; in italiano rispettare il genere
-  dei pezzi (torre/donna femminili, helper in `it.ts`).
+- Testi utente in italiano; rispettare il genere dei pezzi (torre/donna
+  femminili, helper in `it.ts`).
 - Non importare `expo-speech-recognition` staticamente: in Expo Go il modulo
   nativo manca e l'import lancia. Passare sempre da `speechRecognition.ts`,
   che controlla `requireOptionalNativeModule` prima del `require`.

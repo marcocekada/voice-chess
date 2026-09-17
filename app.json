@@ -11,15 +11,15 @@
       "bundleIdentifier": "com.bohtech.voicechess",
       "requireFullScreen": true,
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "Voice Chess Play uses the microphone to hear your chess moves.",
-        "NSSpeechRecognitionUsageDescription": "Voice Chess Play turns your spoken moves into chess moves.",
+        "NSMicrophoneUsageDescription": "Voice Chess Play usa il microfono per ascoltare le tue mosse.",
+        "NSSpeechRecognitionUsageDescription": "Voice Chess Play trasforma le mosse dette a voce in mosse sulla scacchiera.",
         "UISupportedInterfaceOrientations": [
           "UIInterfaceOrientationPortrait",
           "UIInterfaceOrientationPortrait",
           "UIInterfaceOrientationPortrait"
         ],
         "ITSAppUsesNonExemptEncryption": false,
-        "NSPhotoLibraryUsageDescription": "Voice Chess Play does not access your photos. This permission is only required by a system library included in the app."
+        "NSPhotoLibraryUsageDescription": "Voice Chess Play non accede alle tue foto. Questo permesso è richiesto solo da una libreria di sistema inclusa nell'app."
       }
     },
     "android": {
@@ -43,8 +43,8 @@
       [
         "expo-speech-recognition",
         {
-          "microphonePermission": "Voice Chess Play uses the microphone to hear your chess moves.",
-          "speechRecognitionPermission": "Voice Chess Play turns your spoken moves into chess moves.",
+          "microphonePermission": "Voice Chess Play usa il microfono per ascoltare le tue mosse.",
+          "speechRecognitionPermission": "Voice Chess Play trasforma le mosse dette a voce in mosse sulla scacchiera.",
           "androidSpeechServicePackages": [
             "com.google.android.googlequicksearchbox"
           ]

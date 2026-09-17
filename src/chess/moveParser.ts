@@ -1,10 +1,9 @@
 import type { PieceSymbol, Square } from 'chess.js';
-import type { Language } from '../i18n';
 import type { MoveIntent } from './types';
 import { isSquareToken, normalizeCommand } from '../voice/voiceCommandNormalizer';
 
 /**
- * Natural-language parser (Italian + English).
+ * Natural-language parser (Italian).
  * Input: raw text. Output: a structured MoveIntent. It never touches the board.
  */
 
@@ -24,7 +23,7 @@ interface Vocabulary {
   queenSideWords: string[];
   promoteWords: Set<string>;
   clarifyMarkers: string[];
-  /** Single-letter SAN piece codes used in this language. */
+  /** Single-letter SAN piece codes (Italian and international). */
   sanLetters: Record<string, PieceSymbol>;
   stopWords: Set<string>;
 }
@@ -70,47 +69,11 @@ const IT: Vocabulary = {
   ]),
 };
 
-const EN: Vocabulary = {
-  pieces: {
-    pawn: 'p', pawns: 'p', pond: 'p', porn: 'p',
-    knight: 'n', knights: 'n', night: 'n', horse: 'n', nite: 'n',
-    bishop: 'b', bishops: 'b',
-    rook: 'r', rooks: 'r', rock: 'r', brook: 'r',
-    queen: 'q', queens: 'q',
-    king: 'k',
-  },
-  captureVerbs: new Set([
-    'take', 'takes', 'took', 'taking',
-    'capture', 'captures', 'capturing',
-    'eat', 'eats', 'grab', 'grabs', 'kill', 'x',
-  ]),
-  pronounVerbs: new Set([]),
-  pronouns: new Set(['it', 'that', 'him', 'her', 'them']),
-  withWords: new Set(['with', 'using', 'by']),
-  fromWords: new Set(['from']),
-  toWords: new Set(['to', 'on', 'onto', 'at', 'into', 'in']),
-  castleWords: new Set(['castle', 'castles', 'castling', 'castel', 'cassel']),
-  shortWords: new Set(['short', 'kingside', 'kingsside', 'small']),
-  longWords: new Set(['long', 'queenside', 'queensside', 'big']),
-  kingSideWords: ['king side', 'kings side', 'king s side'],
-  queenSideWords: ['queen side', 'queens side', 'queen s side'],
-  promoteWords: new Set(['promote', 'promotes', 'promotion', 'promoting', 'become', 'becomes', 'make']),
-  clarifyMarkers: ['the one', 'that one', 'one on', 'one from', 'i mean', 'i meant'],
-  sanLetters: { N: 'n', B: 'b', R: 'r', Q: 'q', K: 'k' },
-  stopWords: new Set([
-    'the', 'a', 'an', 'my', 'your', 'his',
-    'move', 'moves', 'put', 'play', 'plays', 'go', 'goes', 'bring', 'send', 'place',
-    'please', 'and', 'then', 'now', 'ok', 'okay', 'um', 'uh',
-  ]),
-};
-
-const VOCAB: Record<Language, Vocabulary> = { it: IT, en: EN };
-
 const SAN_RE = /^([NBRQKCATD])?([a-h])?([1-8])?[x:]?([a-h][1-8])(?:=?([NBRQCATD]))?[+#]?$/;
 const CASTLE_SAN_RE = /^(o-o-o|0-0-0|ooo|000|o-o|0-0|oo|00)$/i;
 
-export function parseCommand(raw: string, language: Language): MoveIntent {
-  const vocab = VOCAB[language];
+export function parseCommand(raw: string): MoveIntent {
+  const vocab = IT;
   const trimmed = raw.trim();
   if (!trimmed) return { kind: 'unknown', raw };
 
@@ -142,7 +105,7 @@ export function parseCommand(raw: string, language: Language): MoveIntent {
     }
   }
 
-  const tokens = normalizeCommand(trimmed, language);
+  const tokens = normalizeCommand(trimmed);
   if (tokens.length === 0) return { kind: 'unknown', raw };
   const joined = tokens.join(' ');
 
@@ -151,7 +114,6 @@ export function parseCommand(raw: string, language: Language): MoveIntent {
     let side: 'k' | 'q' | undefined;
     if (tokens.some((t) => vocab.shortWords.has(t)) || vocab.kingSideWords.some((w) => joined.includes(w))) side = 'k';
     else if (tokens.some((t) => vocab.longWords.has(t)) || vocab.queenSideWords.some((w) => joined.includes(w))) side = 'q';
-    // "castle" alone in English also means the verb; if a square or another piece is present it is not castling.
     return { kind: 'castle', side };
   }
 

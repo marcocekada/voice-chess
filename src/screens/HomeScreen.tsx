@@ -2,10 +2,10 @@ import React, { useCallback, useState } from 'react';
 import { Linking, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { SvgXml } from 'react-native-svg';
-import { Button, Chip, Screen } from '../components/ui';
+import { Button, Screen } from '../components/ui';
 import { PIECE_SVGS } from '../components/ChessBoard/pieceSvgs';
 import { colors, radius, shadow, spacing, typography } from '../theme';
-import { useI18n, type Language } from '../i18n';
+import { useI18n } from '../i18n';
 import { useSettings } from '../hooks/useSettings';
 import { gameRepository } from '../storage/gameRepository';
 import type { SavedGame } from '../chess/types';
@@ -14,7 +14,7 @@ import { fullMoveCount } from '../chess/game';
 import { ABOUT } from '../config/about';
 
 export function HomeScreen({ navigation }: RootScreenProps<'Home'>) {
-  const { t, language, setLanguage } = useI18n();
+  const { t } = useI18n();
   const { voiceFeedback, setVoiceFeedback } = useSettings();
   const [active, setActive] = useState<SavedGame | null>(null);
   const [count, setCount] = useState(0);
@@ -75,20 +75,6 @@ export function HomeScreen({ navigation }: RootScreenProps<'Home'>) {
         </View>
 
         <View style={styles.footer}>
-          <View style={styles.settingRow}>
-            <Text style={styles.settingLabel}>{t.common.language}</Text>
-            <View style={styles.langChips}>
-              {(['it', 'en'] as Language[]).map((lang) => (
-                <Chip
-                  key={lang}
-                  small
-                  label={lang === 'it' ? 'Italiano' : 'English'}
-                  selected={language === lang}
-                  onPress={() => void setLanguage(lang)}
-                />
-              ))}
-            </View>
-          </View>
           <Pressable style={styles.settingRow} onPress={() => setVoiceFeedback(!voiceFeedback)}>
             <Text style={styles.settingLabel}>{t.common.voiceFeedback}</Text>
             <Switch
@@ -190,10 +176,6 @@ const styles = StyleSheet.create({
   settingLabel: {
     ...typography.bodyBold,
     color: colors.text,
-  },
-  langChips: {
-    flexDirection: 'row',
-    gap: spacing.sm,
   },
   about: {
     alignItems: 'center',
