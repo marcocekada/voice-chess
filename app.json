@@ -1,0 +1,75 @@
+{
+  "expo": {
+    "name": "Voice Chess Play",
+    "slug": "voice-chess",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.bohtech.voicechess",
+      "requireFullScreen": true,
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Voice Chess Play uses the microphone to hear your chess moves.",
+        "NSSpeechRecognitionUsageDescription": "Voice Chess Play turns your spoken moves into chess moves.",
+        "UISupportedInterfaceOrientations": [
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationPortrait"
+        ],
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPhotoLibraryUsageDescription": "Voice Chess Play does not access your photos. This permission is only required by a system library included in the app."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#F6F1E4",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.bohtech.voicechess",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Voice Chess Play uses the microphone to hear your chess moves.",
+          "speechRecognitionPermission": "Voice Chess Play turns your spoken moves into chess moves.",
+          "androidSpeechServicePackages": [
+            "com.google.android.googlequicksearchbox"
+          ]
+        }
+      ],
+      "expo-asset"
+    ],
+    "scheme": "voicechess",
+    "backgroundColor": "#F6F1E4",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F6F1E4"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "33a0ed2e-936c-48bb-9b0a-935661130f4a"
+      }
+    },
+    "owner": "marcocekada",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/33a0ed2e-936c-48bb-9b0a-935661130f4a"
+    }
+  }
+}
