@@ -4,6 +4,7 @@ import { Chess, type Move, type PieceSymbol, type Square } from 'chess.js';
 import * as Haptics from 'expo-haptics';
 import type { CandidateMove, ConversationContext, GameStatus, PlayerColor, SavedGame } from '../chess/types';
 import {
+  buildPgn,
   buildSavedGame,
   colorName,
   colorToChess,
@@ -446,6 +447,12 @@ export function useChessGame(source: GameSource) {
     resign,
     saveNow: persist,
     describeMove: (m: Move) => describeMove(m, t),
+    exportPgn: (): string => {
+      const meta = metaRef.current;
+      if (!meta) return chessRef.current.pgn();
+      const saved = buildSavedGame(meta, chessRef.current, statusOverrideRef.current ?? undefined);
+      return buildPgn(saved, chessRef.current, t);
+    },
   };
 }
 

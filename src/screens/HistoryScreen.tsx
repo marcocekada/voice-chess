@@ -9,11 +9,24 @@ import { useI18n } from '../i18n';
 import { gameRepository } from '../storage/gameRepository';
 import type { SavedGame } from '../chess/types';
 import type { RootScreenProps } from '../navigation/types';
-import { fullMoveCount, playerWon } from '../chess/game';
+import { buildPgn, fullMoveCount, playerWon, restoreChess } from '../chess/game';
+import * as Clipboard from 'expo-clipboard';
 
 export function HistoryScreen({ navigation }: RootScreenProps<'History'>) {
   const { t, locale } = useI18n();
   const [games, setGames] = useState<SavedGame[]>([]);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const copyPgn = async (game: SavedGame) => {
+    try {
+      const { chess } = restoreChess(game);
+      await Clipboard.setStringAsync(buildPgn(game, chess, t));
+      setCopiedId(game.id);
+      setTimeout(() => setCopiedId((id) => (id === game.id ? null : id)), 1800);
+    } catch {
+      // ignore
+    }
+  };
 
   const reload = useCallback(() => {
     gameRepository.list().then(setGames);
@@ -105,6 +118,13 @@ export function HistoryScreen({ navigation }: RootScreenProps<'History'>) {
                   style={{ flex: 1 }}
                   onPress={() => navigation.navigate('Game', { gameId: item.id })}
                 />
+                <IconButton
+                  accessibilityLabel={t.game.copyMoves}
+                  tone={copiedId === item.id ? 'accent' : 'default'}
+                  onPress={() => void copyPgn(item)}
+                >
+                  <CopyIcon />
+                </IconButton>
                 <IconButton accessibilityLabel={t.common.delete} tone="danger" onPress={() => remove(item)}>
                   <TrashIcon />
                 </IconButton>
@@ -114,6 +134,21 @@ export function HistoryScreen({ navigation }: RootScreenProps<'History'>) {
         }}
       />
     </Screen>
+  );
+}
+
+function CopyIcon() {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 24 24">
+      <Path
+        d="M9 9h10v11H9zM5 15V4h10"
+        stroke={colors.text}
+        strokeWidth={2.2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+    </Svg>
   );
 }
 

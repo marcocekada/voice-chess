@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -15,7 +15,9 @@ import Svg, { Path, Rect } from 'react-native-svg';
 import { Button, Card, Chip, IconButton, Screen } from '../components/ui';
 import { ChessBoard } from '../components/ChessBoard/ChessBoard';
 import { MicrophoneButton } from '../components/MicrophoneButton/MicrophoneButton';
+import { CapturedPieces } from '../components/GameStatus/CapturedPieces';
 import { BackIcon } from './NewGameScreen';
+import * as Clipboard from 'expo-clipboard';
 import { colors, radius, spacing, typography } from '../theme';
 import { useI18n } from '../i18n';
 import { useChessGame } from '../hooks/useChessGame';
@@ -28,6 +30,19 @@ export function GameScreen({ navigation, route }: RootScreenProps<'Game'>) {
   const voice = useVoiceCommands(game.submitCommand);
   const [keyboardMode, setKeyboardMode] = useState(false);
   const [draft, setDraft] = useState('');
+  const [copied, setCopied] = useState(false);
+  const copiedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const copyPgn = async () => {
+    try {
+      await Clipboard.setStringAsync(game.exportPgn());
+      setCopied(true);
+      if (copiedTimer.current) clearTimeout(copiedTimer.current);
+      copiedTimer.current = setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // clipboard unavailable: nothing to do
+    }
+  };
 
   // Without native speech recognition (Expo Go) the keyboard is the way in.
   useEffect(() => {
@@ -204,10 +219,14 @@ export function GameScreen({ navigation, route }: RootScreenProps<'Game'>) {
             </Card>
           ) : null}
 
-          {/* Move list */}
+          {/* Captured pieces + material, then move list */}
+          {game.history.length > 0 ? <CapturedPieces history={game.history} fen={game.fen} /> : null}
           {game.history.length > 0 ? (
             <View style={styles.moveList}>
-              <Text style={styles.moveListTitle}>{t.game.moveList}</Text>
+              <View style={styles.moveListHeader}>
+                <Text style={styles.moveListTitle}>{t.game.moveList}</Text>
+                <Chip small label={copied ? t.game.copied : t.game.copyMoves} selected={copied} onPress={() => void copyPgn()} />
+              </View>
               <Text style={styles.moveListText}>
                 {game.history
                   .map((m, i) => (i % 2 === 0 ? `${i / 2 + 1}. ${m.san}` : m.san))
@@ -464,12 +483,17 @@ const styles = StyleSheet.create({
   moveList: {
     paddingHorizontal: spacing.xs,
   },
+  moveListHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 6,
+  },
   moveListTitle: {
     ...typography.caption,
     color: colors.textMuted,
     textTransform: 'uppercase',
     letterSpacing: 1,
-    marginBottom: 4,
   },
   moveListText: {
     ...typography.mono,

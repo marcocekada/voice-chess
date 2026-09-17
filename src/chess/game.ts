@@ -107,6 +107,34 @@ export function colorName(color: Color, t: Translations): string {
   return color === 'w' ? t.common.white : t.common.black;
 }
 
+/** PGN with headers, ready to paste into an analysis engine or lichess. */
+export function buildPgn(
+  game: Pick<SavedGame, 'playerColor' | 'opponentElo' | 'createdAt' | 'result' | 'status'>,
+  chess: Chess,
+  t: Translations,
+): string {
+  const you = t.common.you;
+  const computer = `${t.common.computer} ${game.opponentElo}`;
+  const date = game.createdAt.slice(0, 10).replace(/-/g, '.');
+  const headers: [string, string][] = [
+    ['Event', t.common.appName],
+    ['Site', 'Voice Chess Play'],
+    ['Date', date],
+    ['White', game.playerColor === 'white' ? you : computer],
+    ['Black', game.playerColor === 'black' ? you : computer],
+    ['Result', game.result ?? '*'],
+  ];
+  if (game.playerColor === 'white') headers.push(['BlackElo', String(game.opponentElo)]);
+  else headers.push(['WhiteElo', String(game.opponentElo)]);
+  if (game.status !== 'active') headers.push(['Termination', t.status[game.status]]);
+  const copy = new Chess();
+  for (const m of chess.history()) copy.move(m);
+  for (const [k, v] of headers) copy.setHeader(k, v);
+  const result = game.result ?? '*';
+  const pgn = copy.pgn();
+  return pgn.trimEnd().endsWith(result) ? pgn : `${pgn.trimEnd()} ${result}`;
+}
+
 export function fullMoveCount(moveHistory: string[]): number {
   return Math.ceil(moveHistory.length / 2);
 }

@@ -114,13 +114,21 @@ export const speechRecognition = {
       mod.start({
         lang: locale,
         interimResults: true,
-        continuous: false,
+        // Continuous: the recognizer does not stop at the first short pause; the
+        // hook decides when the player has finished speaking (see useVoiceCommands).
+        continuous: true,
         maxAlternatives: 3,
+        androidIntentOptions: {
+          EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS: 3000,
+          EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS: 3000,
+          EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS: 4000,
+        },
         addsPunctuation: false,
         requiresOnDeviceRecognition: false,
         contextualStrings: [
-          'a1', 'e4', 'f3', 'cavallo', 'alfiere', 'torre', 'donna', 'pedone', 'arrocco',
-          'knight', 'bishop', 'rook', 'queen', 'pawn', 'castle',
+          'cavallo', 'alfiere', 'torre', 'donna', 'pedone', 're', 'arrocco', 'corto', 'lungo',
+          'mangia', 'mangialo', 'promuovi', 'effe', 'acca',
+          'a1', 'b2', 'c3', 'd4', 'e4', 'e5', 'f3', 'g1', 'h5',
         ],
       });
     } catch (e) {

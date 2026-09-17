@@ -84,6 +84,11 @@ export const it = {
     backHome: 'Torna alla home',
     viewOnly: 'Partita terminata · solo visualizzazione',
     moveList: 'Mosse',
+    captured: 'Pezzi catturati',
+    copyMoves: 'Copia PGN',
+    copied: 'Copiato!',
+    material: 'Materiale',
+    even: 'Pari',
     hintTouch: 'Puoi anche toccare i pezzi sulla scacchiera.',
   },
   history: {
